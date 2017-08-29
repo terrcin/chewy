@@ -1132,7 +1132,8 @@ module Chewy
 
     def _derive_index(index_name)
       (@derive_index ||= {})[index_name] ||= _indexes_hash[index_name] ||
-        _indexes_hash[_indexes_hash.keys.sort_by(&:length).reverse.detect { |name| index_name.start_with?(name) }]
+        _indexes_hash[_indexes_hash.keys.sort_by(&:length).reverse.detect { |name| index_name.start_with?(name) }] ||
+        (@options[:default_on_single_index] && _indexes_hash.values.size == 1 ? _indexes_hash.values.first : nil)
     end
 
     def _indexes_hash
